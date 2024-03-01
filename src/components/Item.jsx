@@ -8,16 +8,12 @@ const Item = ({ product, DeleteProduct }) => {
     return (
         <div className="card">
             <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={product.image} />
                 <Card.Body>
-                    <Card.Title>{product.title}</Card.Title>
-                    <Card.Text>
-                        {product.description}
-                    </Card.Text>
+                    <Card.Title>{product.nombre}</Card.Title>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
-                    <ListGroup.Item>{product.category}</ListGroup.Item>
-                    <ListGroup.Item>${product.price}</ListGroup.Item>
+                    <ListGroup.Item>${product.precio}</ListGroup.Item>
+                    <ListGroup.Item>${product.stock}</ListGroup.Item>
                     <ListGroup.Item>ID: {product.id}</ListGroup.Item>
                 </ListGroup>
                 <Card.Body>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Item from './Item';
 import './styles/ShowProductsCopy.css'
 
-const url = "https://fakestoreapi.com/products"
+const url = "http://localhost:5000/productos"
 
 const ShowProductsCopy = () => {
   const [products, setProducts] = useState([])
@@ -33,10 +33,19 @@ const ShowProductsCopy = () => {
       getProducts()
     } */
   const DeleteProduct = (id) => {
-    fetch(`https://fakestoreapi.com/products/${id}`, {
-      method: "DELETE"
+    let obj = JSON.stringify(
+      {
+        id: id
+      }
+    )
+    fetch(`http://localhost:5000/productos`, {
+      method: "DELETE",
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: obj
     })
-    setProducts(data => 
+    setProducts(data =>
       data.filter(product => {
         return product.id !== id
       }),)
