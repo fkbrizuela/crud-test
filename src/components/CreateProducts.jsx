@@ -10,8 +10,8 @@ const CreateProducts = () => {
   const [stock, setStock] = useState(0.00)
   const redirect = useNavigate()
 
-  const store = (e) => {
-    e.preventDefault()
+  const store = (event) => {
+    event.preventDefault()
     let obj = JSON.stringify(
       {
         nombre: nombre,
@@ -39,7 +39,7 @@ const CreateProducts = () => {
           <div className='card'>
             <div className='card-header bg-dark text-white'>Añadir Producto</div>
             <div className='card-body'>
-              <form onSubmit={store}>
+              <form onSubmit={(event) => store(event)}>
                 <label htmlFor="">Nombre: </label>
                 <input type="text" id='titulo' maxLength='80' className='form-control' required={true} value={nombre} onChange={(e)=>setNombre(e.target.value) }/>
                 <label htmlFor="">Precio: </label>

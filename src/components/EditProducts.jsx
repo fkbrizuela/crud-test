@@ -5,41 +5,39 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import './styles/ShowProductsCopy.css'
 import { Link } from 'react-router-dom';
 
-const url = "https://fakestoreapi.com/products"
+const url = "http://localhost:5000/productos"
 
 const EditProducts = () => {
-  const [product, setProduct] = useState([])
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [category, setCategory] = useState("")
-  const [price, setPrice] = useState(0)
+  const [producto, setProducto] = useState([])
+  const [nombre, setNombre] = useState("")
+  const [precio, setPrecio] = useState(0.00)
+  const [stock, setStock] = useState(0)
   const redirect = useNavigate()
   const { id } = useParams()
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
+    fetch(`http://localhost:5000/productos/?id=${id}`)
       .then(res => res.json())
-      .then((data) => setProduct(data))
+      .then((data) => setProducto(data[0]))
   }, [id])
 
-  const update = () => {
+  const update = (event) => {
+    event.preventDefault();
     let obj = JSON.stringify(
       {
-        title: title,
-        price: price,
-        description: description,
-        category: category
+        nombre: nombre,
+        precio: Number(precio),
+        stock: Number(stock),
+        id: Number(id)
       }
     )
-    fetch(`https://fakestoreapi.com/products/${id}`, {
-      method: "PUT",
+    fetch(`http://localhost:5000/productos`, {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
       body: obj
-    })
-      .then(res => res.json())
-      .then(data => console.log(data))
+    }).then(res => res.json()).then(data => console.log(data))
       redirect('/')
   }
 
@@ -47,16 +45,12 @@ const EditProducts = () => {
     <div className="card">
       <h3>Editar producto</h3>
       <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src={product.image} />
         <Card.Body>
-          <Card.Title>{product.title}</Card.Title>
-          <Card.Text>
-            {product.description}
-          </Card.Text>
+          <Card.Title>{producto.nombre}</Card.Title>
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item>{product.category}</ListGroup.Item>
-          <ListGroup.Item>${product.price}</ListGroup.Item>
+          <ListGroup.Item>{producto.stock}</ListGroup.Item>
+          <ListGroup.Item>${producto.precio}</ListGroup.Item>
         </ListGroup>
         <Card.Body>
           <Link to='/' className="btn btn-primary">Volver</Link>
@@ -70,15 +64,13 @@ const EditProducts = () => {
             <div className='card'>
               <div className='card-header bg-dark text-white'>Editar Producto</div>
               <div className='card-body'>
-                <form onSubmit={update}>
+                <form onSubmit={(event) => update(event)}>
                   <label htmlFor="">Nombre: </label>
-                  <input type="text" id='titulo' maxLength='80' className='form-control' required={true} value={title} onChange={(e) => setTitle(e.target.value)} />
-                  <label htmlFor="">Descripción: </label>
-                  <input type="text" id='descripción' maxLength='150' className='form-control' required={true} value={description} onChange={(e) => setDescription(e.target.value)} />
-                  <label htmlFor="">Categoria: </label>
-                  <input type="text" id='categoria' maxLength='80' className='form-control' required={true} value={category} onChange={(e) => setCategory(e.target.value)} />
+                  <input type="text" id='nombre' maxLength='80' className='form-control' required={true} value={nombre} onChange={(e) => setNombre(e.target.value)} />
                   <label htmlFor="">Precio: </label>
-                  <input type="number" id='precio' className='form-control' step={0.1} required={true} value={price} onChange={(e) => setPrice(e.target.value)} />
+                  <input type="number" id='precio' className='form-control' step={0.1} required={true} value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                  <label htmlFor="">Stock: </label>
+                  <input type="number" id='stock' className='form-control' step={0.1} required={true} value={stock} onChange={(e) => setStock(e.target.value)} />
                   <button className='btn btn-success mt-3'>Guardar</button>
                 </form>
               </div>
